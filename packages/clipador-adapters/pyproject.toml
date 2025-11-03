@@ -1,0 +1,12 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "clipador-adapters"
+version = "0.1.0"
+description = "Adaptadores de integrações externas do Clipador"
+requires-python = ">=3.11"
+
+[tool.hatch.build]
+packages = ["src/clipador_adapters"]

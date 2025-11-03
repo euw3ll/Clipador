@@ -1,0 +1,23 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+
+# Node / Frontend
+node_modules/
+dist/
+.next/
+coverage/
+
+# OS / Misc
+.DS_Store
+*.log
+
+# Editor
+.idea/
+.vscode/
+

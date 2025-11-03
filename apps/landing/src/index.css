@@ -1,0 +1,291 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  /* Adicionado para corrigir o posicionamento das âncoras */
+  html {
+    @apply scroll-pt-20 scroll-smooth;
+  }
+
+  :root {
+    --background: 0 0% 6.3%; /* #101010 */
+    --foreground: 0 0% 100%; /* white text */
+
+    --card: 0 0% 11%; /* #1C1C1C */
+    --card-foreground: 0 0% 100%;
+
+    --popover: 0 0% 11%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 352 89% 52%; /* #f2183c */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 11%; /* #1C1C1C */
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 60%;
+
+    --accent: 352 89% 52%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 20%;
+    --input: 0 0% 15%;
+    --ring: 352 89% 52%;
+
+    --radius: 0.75rem;
+
+    /* Custom Clipador colors */
+    --clipador-primary: 352 89% 52%; /* #f2183c */
+    --clipador-bg-primary: 0 0% 11%; /* #1C1C1C */
+    --clipador-bg-secondary: 0 0% 6.3%; /* #101010 */
+    --clipador-text: 0 0% 100%; /* white */
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(
+      135deg,
+      hsl(var(--clipador-primary)),
+      hsl(352 89% 45%)
+    );
+    --gradient-bg: linear-gradient(
+      180deg,
+      hsl(var(--clipador-bg-secondary)),
+      hsl(var(--clipador-bg-primary))
+    );
+    --gradient-card: linear-gradient(
+      145deg,
+      hsl(var(--clipador-bg-primary) / 0.8),
+      hsl(var(--clipador-bg-secondary) / 0.9)
+    );
+
+    /* Shadows */
+    --shadow-primary: 0 10px 30px -10px hsl(var(--clipador-primary) / 0.3);
+    --shadow-card: 0 8px 25px -8px hsl(0 0% 0% / 0.4);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    /* Same as light mode since we're using dark theme by default */
+    --background: 0 0% 6.3%;
+    --foreground: 0 0% 100%;
+
+    --card: 0 0% 11%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 0 0% 11%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 352 89% 52%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 11%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 60%;
+
+    --accent: 352 89% 52%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 20%;
+    --input: 0 0% 15%;
+    --ring: 352 89% 52%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom animations */
+@keyframes gradient {
+  0%,
+  100% {
+    background-size: 200% 200%;
+    background-position: left center;
+  }
+  50% {
+    background-size: 200% 200%;
+    background-position: right center;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    box-shadow: 0 0 5px currentColor;
+  }
+  50% {
+    box-shadow: 0 0 20px currentColor;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-gradient {
+  animation: gradient 3s ease infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.8s ease-out;
+}
+
+/* Dopamine microinteractions */
+@keyframes shine {
+  0% { left: -150%; }
+  60% { left: 150%; }
+  100% { left: 150%; }
+}
+
+@keyframes pulse-shadow {
+  0%, 100% { box-shadow: 0 0 0 0 hsl(var(--clipador-primary) / 0.0); }
+  50% { box-shadow: 0 8px 30px 0 hsl(var(--clipador-primary) / 0.35); }
+}
+
+@keyframes badge-pulse {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 0 0 0 hsl(var(--clipador-primary) / 0.0);
+  }
+  50% {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 8px 20px -6px hsl(var(--clipador-primary) / 0.45);
+  }
+}
+
+.dopamine-shine {
+  position: relative;
+  overflow: hidden;
+}
+.dopamine-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 -150%;
+  width: 50%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.25), transparent);
+  transform: skewX(-20deg);
+  animation: shine 2.6s ease-in-out infinite;
+}
+
+.pulse-shadow {
+  animation: pulse-shadow 2.4s ease-in-out infinite;
+}
+
+.dopamine-pop {
+  transition: transform .35s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow .35s ease;
+}
+.dopamine-pop:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: var(--shadow-primary);
+}
+
+.badge-pulse {
+  animation: badge-pulse 2.6s ease-in-out infinite;
+}
+
+/* Nav link underline aligned to brand */
+.brand-underline {
+  position: relative;
+}
+.brand-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  height: 2px;
+  width: 100%;
+  background: hsl(var(--clipador-primary));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .25s ease;
+  opacity: .8;
+}
+.brand-underline:hover::after { transform: scaleX(1); }
+
+/* Respect reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .animate-gradient,
+  .animate-float,
+  .animate-glow,
+  .animate-slide-up,
+  .dopamine-shine::after,
+  .pulse-shadow,
+  .dopamine-pop,
+  .dopamine-pop:hover {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+}

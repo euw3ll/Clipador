@@ -1,0 +1,18 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "clipador-core"
+version = "0.1.0"
+description = "Regras de domínio compartilhadas do Clipador"
+requires-python = ">=3.11"
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "pytest-asyncio"
+]
+
+[tool.hatch.build]
+packages = ["src/clipador_core"]

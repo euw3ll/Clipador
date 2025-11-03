@@ -1,0 +1,15 @@
+{
+  "name": "clipador-monorepo",
+  "private": true,
+  "workspaces": [
+    "apps/web",
+    "apps/landing"
+  ],
+  "packageManager": "npm@10.8.1",
+  "scripts": {
+    "dev:web": "npm --prefix apps/web run dev",
+    "dev:landing": "npm --prefix apps/landing run dev",
+    "build:web": "npm --prefix apps/web run build",
+    "build:landing": "npm --prefix apps/landing run build"
+  }
+}

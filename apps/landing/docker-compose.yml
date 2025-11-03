@@ -1,0 +1,85 @@
+# docker compose para publicar o site (Nginx) e a API (Express)
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: clipador_web
+    restart: always
+    labels:
+      - traefik.docker.network=traefik
+      - traefik.enable=true
+      - traefik.http.routers.clipador-web.rule=Host(`www.${SITE_HOST}`)
+      - traefik.http.routers.clipador-web.entrypoints=websecure
+      - traefik.http.routers.clipador-web.tls=true
+      - traefik.http.routers.clipador-web.tls.certresolver=letsencrypt
+      # HTTP -> HTTPS redirect
+      - traefik.http.routers.clipador-web-http.rule=Host(`www.${SITE_HOST}`)
+      - traefik.http.routers.clipador-web-http.entrypoints=web
+      - traefik.http.routers.clipador-web-http.middlewares=redirect-to-https
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
+      - traefik.http.services.clipador-web.loadbalancer.server.port=80
+      # Redirect apex -> www (HTTP and HTTPS)
+      - traefik.http.middlewares.apex-to-www.redirectregex.regex=^https?://(.*)
+      - traefik.http.middlewares.apex-to-www.redirectregex.replacement=https://www.$1
+      - traefik.http.middlewares.apex-to-www.redirectregex.permanent=true
+      - traefik.http.routers.clipador-apex-http.rule=Host(`${SITE_HOST}`)
+      - traefik.http.routers.clipador-apex-http.entrypoints=web
+      - traefik.http.routers.clipador-apex-http.middlewares=apex-to-www
+      - traefik.http.routers.clipador-apex-http.service=noop@internal
+      - traefik.http.routers.clipador-apex-https.rule=Host(`${SITE_HOST}`)
+      - traefik.http.routers.clipador-apex-https.entrypoints=websecure
+      - traefik.http.routers.clipador-apex-https.tls=true
+      - traefik.http.routers.clipador-apex-https.tls.certresolver=letsencrypt
+      - traefik.http.routers.clipador-apex-https.middlewares=apex-to-www
+      - traefik.http.routers.clipador-apex-https.service=noop@internal
+    networks: [traefik, default]
+
+  api:
+    build:
+      context: api
+      dockerfile: Dockerfile
+    container_name: clipador_api
+    restart: always
+    env_file:
+      - api/.env
+    environment:
+      - PORT=3001
+      - EXPORTS_DIR=/app/exports
+      - SOCIAL_TEMP_DIR=/app/temp
+      - SOCIAL_EXPORT_BASE_URL=https://${SITE_HOST}/social/exports
+      - FORCE_PROXY_DOWNLOAD=false
+    volumes:
+      - exports_data:/app/exports
+      - temp_data:/app/temp
+    labels:
+      - traefik.docker.network=traefik
+      - traefik.enable=true
+      - traefik.http.routers.clipador-api.rule=Host(`www.${SITE_HOST}`) && PathPrefix(`/api`)
+      - traefik.http.routers.clipador-api.entrypoints=websecure
+      - traefik.http.routers.clipador-api.tls=true
+      - traefik.http.routers.clipador-api.tls.certresolver=letsencrypt
+      - traefik.http.routers.clipador-api.service=clipador-api
+      - traefik.http.services.clipador-api.loadbalancer.server.port=3001
+      - traefik.http.routers.clipador-health.rule=Host(`www.${SITE_HOST}`) && PathPrefix(`/health`)
+      - traefik.http.routers.clipador-health.entrypoints=websecure
+      - traefik.http.routers.clipador-health.tls=true
+      - traefik.http.routers.clipador-health.tls.certresolver=letsencrypt
+      - traefik.http.routers.clipador-health.service=clipador-health
+      - traefik.http.services.clipador-health.loadbalancer.server.port=3001
+      - traefik.http.routers.clipador-social.rule=Host(`www.${SITE_HOST}`) && PathPrefix(`/social`)
+      - traefik.http.routers.clipador-social.entrypoints=websecure
+      - traefik.http.routers.clipador-social.tls=true
+      - traefik.http.routers.clipador-social.tls.certresolver=letsencrypt
+      - traefik.http.routers.clipador-social.service=clipador-social
+      - traefik.http.services.clipador-social.loadbalancer.server.port=3001
+    networks: [traefik, default]
+
+volumes:
+  exports_data:
+  temp_data:
+
+networks:
+  traefik:
+    external: true
